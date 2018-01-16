@@ -38,7 +38,7 @@ namespace ImageProcessing
                 string imageFileName = fileDialog.FileName;
                 Bitmap bitmap = Bitmap.FromFile(imageFileName) as Bitmap;
 
-                ImageFilter filter = new GrayscaleFilter();
+                ImageFilter filter = new BoxBlurFilter();
                 processedImage.Source = BitmapToImageSource(filter.Process(bitmap));
             }
         }

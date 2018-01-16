@@ -61,10 +61,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\BoxBlurFilter.cs" />
     <Compile Include="Filters\GrayscaleFilter.cs" />
     <Compile Include="Helperes\ImageByteData.cs" />
     <Compile Include="Helperes\PixelByteData.cs" />
-    <Compile Include="AbstractClasses\IImageFilter.cs" />
+    <Compile Include="AbstractClasses\ImageFilter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -92,6 +93,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

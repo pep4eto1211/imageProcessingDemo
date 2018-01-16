@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="515" Width="815" Loaded="Window_Loaded">
     <Grid>
-        <Image x:Name="processedImage"/>
+        <Image RenderOptions.EdgeMode="Aliased" x:Name="processedImage"/>
 
     </Grid>
 </Window>
