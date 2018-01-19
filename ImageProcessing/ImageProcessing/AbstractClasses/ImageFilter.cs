@@ -6,12 +6,13 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ImageProcessing.AbstractClasses
 {
     public abstract class ImageFilter
     {
-        public Bitmap Process(Bitmap image)
+        public async Task<Bitmap> Process(Bitmap image)
         {
             Bitmap processedImage = new Bitmap(image);
 
@@ -24,18 +25,21 @@ namespace ImageProcessing.AbstractClasses
             //copy pixels to buffer
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
 
-            ImageByteData processedImageData = new ImageByteData(buffer, data.Width, depth);
+            await Task.Run(() =>
+            {
+                ImageByteData oldImageData = new ImageByteData(buffer, data.Width, depth);
 
-            ApplyFilterToPixels(processedImageData, 0, 0, data.Width, data.Height);
+                ImageByteData processedImageData = ApplyFilterToPixels(oldImageData, 0, 0, data.Width, data.Height);
 
-            //Copy the buffer back to image
-            Marshal.Copy(processedImageData.Data, 0, data.Scan0, buffer.Length);
-
+                //Copy the buffer back to image
+                Marshal.Copy(processedImageData.Data, 0, data.Scan0, buffer.Length);
+            });
+            
             processedImage.UnlockBits(data);
 
             return processedImage;
         }
 
-        protected abstract void ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy);
+        protected abstract ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy);
     }
 }

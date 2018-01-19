@@ -15,8 +15,10 @@ namespace ImageProcessing.Filters
     public class GrayscaleFilter : ImageFilter
     {
         #region Helper methods
-        protected override void ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy)
+        protected override ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy)
         {
+            ImageByteData newImage = new ImageByteData(image.Data.ToArray(), image.Width, image.Depth);
+
             Parallel.For(x, endx, (indexX) =>
             {
                 Parallel.For(y, endy, (indexY) =>
@@ -30,6 +32,8 @@ namespace ImageProcessing.Filters
                     image.SetPixel(indexX, indexY, pixel);
                 });
             });
+
+            return newImage;
         }
         #endregion
     }

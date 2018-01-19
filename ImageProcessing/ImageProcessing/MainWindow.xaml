@@ -7,7 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="515" Width="815" Loaded="Window_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
         <Image RenderOptions.EdgeMode="Aliased" x:Name="processedImage"/>
+        <Grid Grid.Row="1" Background="#FF2D2D30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="89"/>
+                <ColumnDefinition Width="174"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Load picture" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,5,5,5" Click="Button_Click" Grid.Column="2" Height="20"/>
+            <Button x:Name="applyEffectButton" Content="Apply effect" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,5,85,5" Click="Button_Click_1" IsEnabled="False" Grid.Column="2" Height="20"/>
+            <ProgressBar x:Name="inProgresProgressBar" Margin="5" IsIndeterminate="True" Visibility="Collapsed" Foreground="#FF007ACC" Background="{x:Null}" BorderBrush="#FF007ACC"/>
+            <TextBlock x:Name="statusTextBlock" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,7,0,7" Text="Applying filter" Height="16" Width="75" Foreground="#FFEEEEEE" Visibility="Collapsed"/>
+        </Grid>
 
     </Grid>
 </Window>
