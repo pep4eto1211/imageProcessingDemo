@@ -36,25 +36,11 @@ namespace ImageProcessing.Filters
                 return result;
             }
         }
-
-        protected override ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy)
+        
+        protected virtual PixelByteData CalculateConvolutedValue(int indexX, int indexY, int endX, int endY, ImageByteData image)
         {
-            ImageByteData newImage = new ImageByteData(image.Data.ToArray(), image.Width, image.Depth);
-
-            Parallel.For(y, endy, (indexY) =>
-            {
-                Parallel.For(x, endx, (indexX) =>
-                {
-                    PixelByteData pixel = image.GetPixel(indexX, indexY);
-                    pixel = CalculateConvolutedValue(indexX, indexY, endx, endy, image);
-                    newImage.SetPixel(indexX, indexY, pixel);
-                });
-            });
-
-            return newImage;
+            return null;
         }
-
-        protected abstract PixelByteData CalculateConvolutedValue(int indexX, int indexY, int endX, int endY, ImageByteData image);
 
         protected void GetImageCoordinatesFromKernelCoordinates(out int imageX, out int imageY, int kernelI, int kernelJ, int originX, int originY)
         {
