@@ -10,6 +10,8 @@ namespace ImageProcessing.Filters
 {
     public class BoxBlurFilter : BlurFilter
     {
+        public override string FilterName => "Box Blur";
+
         protected override int _KernelDimentinSize
         {
             get

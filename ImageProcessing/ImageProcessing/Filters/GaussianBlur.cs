@@ -7,6 +7,8 @@ namespace ImageProcessing.Filters
 {
     public class GaussianBlurFilter : BlurFilter
     {
+        public override string FilterName => "Gaussian Blur";
+
         protected override int _KernelDimentinSize
         {
             get

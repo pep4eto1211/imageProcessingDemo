@@ -13,6 +13,15 @@ namespace ImageProcessing.Filters
     {
         private int[,] _kernel;
         private bool _isImageInColor;
+        private bool _isDirectionBoth = false;
+
+        private int[,] _verticalEdgeKernel = new int[3, 3] { { -1, 0, 1},
+                                               { -2, 0, 2},
+                                               { -1, 0, 1} };
+
+        private int[,] _horizontalEdgeKernel = new int[3, 3] { { -1, -2, -1},
+                                               { 0, 0, 0},
+                                               { 1, 2, 1} };
 
         public SobelEdgeDetectFilter(SobelDirection direction, bool isImageInColor)
         {
@@ -21,22 +30,18 @@ namespace ImageProcessing.Filters
             switch (direction)
             {
                 case SobelDirection.Vertical:
-                    this._kernel = new int[3, 3] { { -1, 0, 1},
-                                               { -2, 0, 2},
-                                               { -1, 0, 1} };
+                    this._kernel = _verticalEdgeKernel;
                     break;
                 case SobelDirection.Horizontal:
-                    this._kernel = new int[3, 3] { { -1, -2, -1},
-                                               { 0, 0, 0},
-                                               { 1, 2, 1} };
+                    this._kernel = _horizontalEdgeKernel;
                     break;
                 case SobelDirection.Both:
-                    this._kernel = new int[3, 3] { { -1, -1, -1},
-                                               { -1, 8, -1},
-                                               { -1, -1, -1} };
+                    this._isDirectionBoth = true;
                     break;
             }
         }
+
+        public override string FilterName => "Sobel Edge Detection";
 
         protected override int[,] _Kernel
         {
@@ -57,6 +62,8 @@ namespace ImageProcessing.Filters
         protected override PixelByteData CalculateConvolutedValue(int indexX, int indexY, int endx, int endy, ImageByteData image)
         {
             int newColorValue = 0;
+            int newColorValueVertical = 0;
+            int newColorValueHorizontal = 0;
 
             for (int i = 0; i < _KernelDimentinSize; i++)
             {
@@ -81,18 +88,43 @@ namespace ImageProcessing.Filters
                             intensity = pixel.R;
                         }
 
-                        newColorValue += intensity * this._Kernel[i, j];
+                        if (!_isDirectionBoth)
+                        {
+                            newColorValue += intensity * this._Kernel[i, j]; 
+                        }
+                        else
+                        {
+                            newColorValueHorizontal += intensity * this._horizontalEdgeKernel[i, j];
+                            newColorValueVertical += intensity * this._verticalEdgeKernel[i, j];
+                        }
                     }
                 }
             }
 
-            int bigValue = newColorValue;
-            newColorValue = Math.Abs(newColorValue);
-            double newColorDouble = newColorValue / 4;
-            newColorValue = (int)Math.Round(newColorDouble);
+            if (!_isDirectionBoth)
+            {
+                int bigValue = newColorValue;
+                newColorValue = Math.Abs(newColorValue);
 
-            PixelByteData newPixel = new PixelByteData((byte)(newColorValue), (byte)(newColorValue), (byte)(newColorValue));
-            return newPixel;
+                if (newColorValue > 255)
+                {
+                    newColorValue = 255;
+                }
+
+                PixelByteData newPixel = new PixelByteData((byte)(newColorValue), (byte)(newColorValue), (byte)(newColorValue));
+                return newPixel; 
+            }
+            else
+            {
+                int bigValue = (int)Math.Round(Math.Sqrt((newColorValueHorizontal * newColorValueHorizontal) + (newColorValueVertical * newColorValueVertical)));
+                if (bigValue > 255)
+                {
+                    bigValue = 255;
+                }
+
+                PixelByteData newPixel = new PixelByteData((byte)(bigValue), (byte)(bigValue), (byte)(bigValue));
+                return newPixel;
+            }
         }
     }
 }

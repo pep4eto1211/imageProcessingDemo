@@ -14,6 +14,8 @@ namespace ImageProcessing.Filters
 {
     public class GrayscaleFilter : ImageFilter
     {
+        public override string FilterName => "Greyscale";
+
         #region Helper methods
         protected override ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy)
         {
@@ -29,7 +31,7 @@ namespace ImageProcessing.Filters
                     pixel.G = gray;
                     pixel.B = gray;
 
-                    image.SetPixel(indexX, indexY, pixel);
+                    newImage.SetPixel(indexX, indexY, pixel);
                 });
             });
 

@@ -13,6 +13,8 @@ namespace ImageProcessing.Filters
         private byte _threshold;
         private bool _isImageInColor;
 
+        public override string FilterName => "Binary";
+
         public BinaryFilter(byte threshold, bool isImageInColor)
         {
             this._threshold = threshold;

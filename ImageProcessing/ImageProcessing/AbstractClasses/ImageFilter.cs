@@ -40,6 +40,14 @@ namespace ImageProcessing.AbstractClasses
             return processedImage;
         }
 
-        protected abstract ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy);
+        protected virtual ImageByteData ApplyFilterToPixels(ImageByteData image, int x, int y, int endx, int endy)
+        {
+            return null;
+        }
+
+        public abstract string FilterName
+        {
+            get;
+        }
     }
 }
